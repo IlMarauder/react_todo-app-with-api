@@ -67,7 +67,7 @@ export const TodoHeader: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    if (inputRef.current && processing === null && !isEditing) {
+    if (inputRef.current && !processing && !isEditing) {
       inputRef.current.focus();
     }
   }, [processing, isEditing]);
