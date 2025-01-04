@@ -7,13 +7,13 @@ import cn from 'classnames';
 
 type Props = {
   todo: Todo;
-  processing: number;
+  processing: number | null;
   todosQuantity: number;
   setTodosQuantity: (todosQuantity: number) => void;
   onDelete: (todoId: number) => Promise<void>;
   onUpdate: (redactedTodo: Todo) => Promise<void>;
-  isEditing: number | undefined;
-  setIsEditing: (isEditing: number | undefined) => void;
+  isEditing: number | null;
+  setIsEditing: (isEditing: number | null) => void;
 };
 
 export const TodoMain: React.FC<Props> = ({
@@ -33,7 +33,7 @@ export const TodoMain: React.FC<Props> = ({
   const handleChangeCompleted = () => {
     onUpdate({
       ...todo,
-      completed: todo.completed ? false : true,
+      completed: !todo.completed,
     }).then(() =>
       setTodosQuantity(todo.completed ? todosQuantity + 1 : todosQuantity - 1),
     );
@@ -47,7 +47,7 @@ export const TodoMain: React.FC<Props> = ({
         .catch(() => {
           throw new Error();
         })
-        .then(() => setIsEditing(undefined));
+        .then(() => setIsEditing(null));
     }
 
     return onUpdate({
@@ -57,13 +57,13 @@ export const TodoMain: React.FC<Props> = ({
       .catch(() => {
         throw new Error();
       })
-      .then(() => setIsEditing(undefined));
+      .then(() => setIsEditing(null));
   }
 
   const handleEditingTitle = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Escape') {
       setNewTitle(todo.title);
-      setIsEditing(undefined);
+      setIsEditing(null);
 
       return;
     }
@@ -72,7 +72,7 @@ export const TodoMain: React.FC<Props> = ({
       event.preventDefault();
 
       if (newTitle === todo.title) {
-        setIsEditing(undefined);
+        setIsEditing(null);
 
         return;
       }

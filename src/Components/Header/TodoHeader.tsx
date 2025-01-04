@@ -9,9 +9,9 @@ type Props = {
   onAdd: (newTodo: Todo) => Promise<void>;
   onUpdate: (redactedTodo: Todo) => Promise<void>;
   setError: (error: Errors | null) => void;
-  processing: number;
+  processing: number | null;
   setTodosQuantity: (todosQuantity: number) => void;
-  isEditing: number | undefined;
+  isEditing: number | null;
 };
 
 export const TodoHeader: React.FC<Props> = ({
@@ -67,7 +67,7 @@ export const TodoHeader: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    if (inputRef.current && processing && !isEditing) {
+    if (inputRef.current && processing === null && !isEditing) {
       inputRef.current.focus();
     }
   }, [processing, isEditing]);
@@ -94,7 +94,7 @@ export const TodoHeader: React.FC<Props> = ({
           ref={inputRef}
           value={title}
           onChange={event => setTitle(event.target.value)}
-          disabled={processing !== -1}
+          disabled={processing !== null}
         />
       </form>
     </header>

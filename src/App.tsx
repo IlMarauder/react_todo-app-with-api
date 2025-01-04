@@ -16,9 +16,9 @@ export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [filter, setFilter] = useState(Filter.All);
   const [errorMessage, setErrorMessage] = useState<Errors | null>(null);
-  const [processing, setProcessing] = useState<number>(-1);
+  const [processing, setProcessing] = useState<number | null>(null);
   const [todosQuantity, setTodosQuantity] = useState(0);
-  const [isEditing, setIsEditing] = useState<number | undefined>(undefined);
+  const [isEditing, setIsEditing] = useState<number | null>(null);
 
   const AddTodo = useCallback(
     (newTodo: Todo) => {
@@ -49,7 +49,7 @@ export const App: React.FC = () => {
           });
           throw error;
         })
-        .finally(() => setProcessing(-1));
+        .finally(() => setProcessing(null));
     },
     [todosQuantity],
   );
@@ -76,7 +76,7 @@ export const App: React.FC = () => {
           setErrorMessage(Errors.Delete);
           throw error;
         })
-        .finally(() => setProcessing(-1));
+        .finally(() => setProcessing(null));
     },
     [todosQuantity],
   );
@@ -100,7 +100,7 @@ export const App: React.FC = () => {
         setErrorMessage(Errors.Redact);
         throw error;
       })
-      .finally(() => setProcessing(-1));
+      .finally(() => setProcessing(null));
   }, []);
 
   const viewedTodos = useMemo(
